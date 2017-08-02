@@ -54,82 +54,67 @@
 > 用在http/1.1分块传输编码。
 - 报文主体之后（分块长度0之后）出现首部字段Expires。
 
+        HTTP/1.1 200 OK
+        Date: Tue, 03 Jul 2012 04:40:59 GMT
+        Content-Type: text/html
+        ...
         Trailer: Expires
         空行
         ...（报文主体）...
         0
         Expires: Tue, 28 Sep 2004 23:59:59 GMT
 ### Transfer-Encoding：逐跳首部，指定报文主体的传输编码方式
-> 
 
-> Upgrade -> 逐跳
+### Upgrade：逐跳首部，升级为其他协议
+> 检测是否能用更高版本协议进行通信
+- 仅限于客户端和相邻服务器之间，因此需指定 Connection: Upgrade。
 
-    升级为其他协议
+        GET /index.html HTTP/1.1
+        Upgrade: TSL/1.0
+        Connection: Upgrade
 
-> Via
+        HTTP/1.1 101 Switching Protocols
+        Upgrade: TSL/1.0, HTTP/1.1
+        Connection: Upgrade
+### Via：代理服务器的相关信息
+> 追踪客户端和服务器之间的请求和响应报文的传输路径
+- 报文经过代理或网关时，会先在首部字段Via中附加该服务器的信息。
+> 避免回路的发生
+### Warning：错误通知
+> 告知用户一些与缓存相关的问题和警告，由http/1.0 Retry-After演变而来。
+- 首部格式。最后的日期时间部分可省略。
 
-    代理服务器的相关信息
-
-> Warning
-
-    错误通知
+        Warning: [警告码][警告的主机：端口号]"[警告的内容]"([日期时间])
+        Warning: 113 gw.hacker.jp:8080 "Heuristic expiration" Tue, 03 Jul 2012 05:09:44 GMT
+> http/1.1定义了7种警告码，可扩展
+- 110   Response is stale（响应已过期）                   代理返回已过期的资源
+- 111   Revalidation failed（再验证失败）                 代理再验证资源有效性时失败（服务器无法到达等原因）
+- 112   Disconnection operation（断开连接操作）           代理和互联网连接被故意切断
+- 113   Heuristic expiration（试探性过期）                响应的使用期超过24小时（有效缓存的设定时间大于24小时的情况下）
+- 199   Miscellaneous warning（杂项警告）                 任意的警告内容
+- 214   Transformation applied（使用了转换）              代理对内容编码或媒体类型等执行了某些处理时
+- 299   Miscellaneous presistent warning（持久杂项警告）  任意的警告内容
 ## 请求首部字段
-> Accept
+### Accept：用户代理可处理的媒体类型
 
-    用户代理可处理的媒体类型
-
-> Accept-Charset
-
-    优先的字符集
-> Accept-Encoding
-
-    优先的内容编码
-> Accept-Language
-
-    优先的语言
-> Authorization
-
-    Web认证信息
-> Expect
-
-    期待服务器的特定行为
-> From
-
-    用户的电子邮箱地址
-> Host
-
-    请求资源所在服务器
-> if-Match
-
-    比较实体标记(ETag)
-> if-Modified-Since
-
-    比较资源的更新时间
-> if-None-Match
-
-    比较实体标记(与if-Match相反)
-> if-Range
-
-    资源未更新时发送实体Byte的范围请求
-> if-Unmodified-Since
-
-    比较资源的更新时间(与if-Modified-Since相反)
-> Max-Forwards
-
-    最大传输逐跳数
-> Proxy-Authorization -> 逐跳
-
-    代理服务器要求客户端的认证信息
-> Range
-
-    实体的字节范围请求
-> Referer
-
-    对请求中URI的原始获取方
-> TE -> 逐跳
-
-    传输编码优先级
-> User-Agent
+### Accept-Charset：优先的字符集
+### Accept-Encoding：优先的内容编码
+### Accept-Language：优先的语言
+### Authorization：Web认证信息
+### Expect：期待服务器的特定行为
+### From：用户的电子邮箱地址
+### Host：请求资源所在服务器
+### if-Match：比较实体标记(ETag)
+### if-Modified-Since：比较资源的更新时间
+### if-None-Match：比较实体标记(与if-Match相反)
+### if-Range：资源未更新时发送实体Byte的范围请求
+### if-Unmodified-Since：比较资源的更新时间(与if-Modified-Since相反)
+### Max-Forwards：最大传输逐跳数
+### Proxy-Authorization：逐跳首部，代理服务器要求客户端的认证信息
+### Range：实体的字节范围请求
+### Referer：对请求中URI的原始获取方
+### TE：逐跳首部，传输编码优先级
+### User-Agent
 
     HTTP客户端程序的信息
 ## 响应首部字段
