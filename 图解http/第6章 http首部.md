@@ -244,3 +244,43 @@
 > 指明资源最后修改日期。
 
         Last-Modified: Web, 23 May 2012 09:59:55 GMT
+## 为Cookie服务的首部字段
+### Set-Cookie：开始状态管理所使用的Cookie信息，响应首部字段
+> 字段值
+- NAME=VALUE        赋予Cookie的名称和某值（必须项）
+- expires=DATA      Cookie的有效期（若不明确指定则默认为浏览器关闭为止）
+- path=PATH         将服务器上的文件目录作为Cookie的适用对象（若不指定则默认为文档所在文件目录）
+- domain=域名       作为Cookie使用对象的域名（若不指定则默认为创建Cookie的服务器的域名）
+- Secure            仅在HTTPS安全通信时才会发送Cookie
+- HttpOnly          加以限制，使Cookie不能被Javascript脚本访问
+
+        Set-Cookie: status=enable; expires=Tue, 05 Jul 2011 07:26:31 GMT; path=/; domain=.hackr.jp; secure; HttpOnly
+### Cookie：服务器接收到的Cookie信息，请求首部字段
+> 接收到多个Cookie时，同时可以以多个Cookie形式发送。
+## 其他首部字段
+> http首部字段是可扩展的，会出现各种非标准的首部字段。
+### X-Frame-Options，响应首部字段
+> 控制Web网站的Frame标签内的显示问题，为防止点击劫持攻击。
+- DENY 拒绝
+- SAMEORIGIN：仅同源域名下的页面匹配时许可。
+
+        X-Frame-Options: DENY
+### X-XSS-Protection，响应首部字段
+> 针对跨站脚本攻击的一种对策，用于控制浏览器XSS防护机制的开关。
+- 0：将XSS过滤设置成无效状态。
+- 1：将XSS过滤设置成有效状态。
+
+        X-XSS-protection: 1
+### DNT，请求首部字段
+> 拒绝个人信息被收集，拒绝被推广广告追踪的一种方法。
+- 0：同意被追踪。
+- 1：拒绝被追踪。
+
+        DNT: 1
+### P3P，响应首部字段
+> 利用（P3P）在线隐私偏好平台技术，让Web网站上的个人隐私变成一种程序可理解的形式，以达到保护隐私的目的。
+1. 创建P3P隐私
+2. 创建P3P隐私对照文件后，保存命名在/w3c/p3p.html
+3. 从P3P隐私中新建Compact policicsh后，输出到HTTP响应中
+
+        P3P: CP="CAO DSP LAW CURa ADMa DEVa TAIa PSAa PSDa IVAa IVDa OUR BUS IND UNI COM NAV INT"
