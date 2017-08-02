@@ -96,83 +96,151 @@
 - 299   Miscellaneous presistent warning（持久杂项警告）  任意的警告内容
 ## 请求首部字段
 ### Accept：用户代理可处理的媒体类型
+> 通知服务器，用户代理能处理的媒体类型，用权重q(0-1)表示相对优先级。
 
+        Accept: text/html,text/plain;q=0.6;
 ### Accept-Charset：优先的字符集
+> 通知服务器，用户代理支持的字符集，用权重q(0-1)表示相对优先级。
+
+        Accept-Charset: ios-8859-5, unicode-1-1;q=0.8
 ### Accept-Encoding：优先的内容编码
+> 通告服务器，用户代理支持的内容编码，用权重q(0-1)表示相对优先级。
+
+        Accpet-Encoding: gzip, compress;q=0.8
 ### Accept-Language：优先的语言
+> 通知服务器，用户代理支持的自然语言集，用权重q(0-1)表示相对优先级
+
+        Accept-Language: zh-cn,zh;q=0.7,en-us,en=0.3
 ### Authorization：Web认证信息
+> 告诉服务器，用户代理的认证信息。
 ### Expect：期待服务器的特定行为
+> 等待状态码100响应的客户端在发生请求时，需要指定
+
+        Expect: 100-continue
 ### From：用户的电子邮箱地址
+> 告知服务器用户代理的邮箱地址。
+
+        From: info@hackr.jp
 ### Host：请求资源所在服务器
+> 告知服务器，请求的资源所在的互联网主机名和端口号。
+
+        Host: www.hackr.jp
 ### if-Match：比较实体标记(ETag)
+> 此字段值与ETag匹配时，服务器才处理请求。
 ### if-Modified-Since：比较资源的更新时间
+> 此字段指定日期后，资源发生更新，服务器才处理请求。
+
+        If-Modified-Since: Thu, 15 Apr 2004 00:00:00 GMT
 ### if-None-Match：比较实体标记(与if-Match相反)
+> 此字段值与ETag值不一致时，服务器才处理请求。
 ### if-Range：资源未更新时发送实体Byte的范围请求
+> 此字段值和请求资源的ETag值或时间一致时,作范围处理。反之，返回全部资源。
+
+        GET /index.html
+        If-Range: '123456',
+        Range: bytes=5001-10000
 ### if-Unmodified-Since：比较资源的更新时间(与if-Modified-Since相反)
+> 请求资源在此字段指定时间后未发生变化,才处理请求。
+
+        If-Unmodified-Since: Thu, 15 Apr 2004 00:00:00 GMT
 ### Max-Forwards：最大传输逐跳数
+> 以十进制整数指定可经过的服务器最大数目。
 ### Proxy-Authorization：逐跳首部，代理服务器要求客户端的认证信息
+> 接受到来自代理服务器发来的认证质询时，客户端用发送包含此字段的请求，以告知服务器认证所需要的信息。
 ### Range：实体的字节范围请求
+> 对只需获取部分资源的范围请求，包含此字段告知服务器资源的指定范围。
+
+        Range: bytes=5001-1000
 ### Referer：对请求中URI的原始获取方
+> 请求的原始资源的URI
+
+        referer: http://www.hackr.jp/index.html
 ### TE：逐跳首部，传输编码优先级
-### User-Agent
+> 告知服务器，客户端能够处理的传输编码方式及相对优先级。
 
-    HTTP客户端程序的信息
+        TE: gzip, deflate;q=0.5
+### User-Agent：HTTP客户端程序的信息
+> 浏览器用户代理名称等信息
+- 网络爬虫发起请求时，在字段中加入爬虫作者的联系方式
+- 经过代理，可能添加上代理服务器的名称。
 ## 响应首部字段
-> Accept-Ranges
-    
-    是否接受字节范围请求
-> Age
+### Accept-Ranges：是否接受字节范围请求
+> 告知客户端，服务器能否处理范围请求。
+- 可处理指定bytes
 
-    推算资源创建经过时间
-> ETag
+        Accept-Ranges: bytes
+- 反之指定none
 
-    资源的匹配信息
-> Location
+        Accept-Ranges: none
+### Age：推算资源创建经过时间
+> 告知客户端，源服务器多久前创建了响应。单位为秒。
+> 若创建响应的服务器是缓存服务器，则表示认证到当前的时间值，代理创建响应时必须加上Age首部。
+### ETag：资源的匹配信息
+> 将资源以字符串形式做唯一性标志的方式。
+- 服务器会为没份资源分配ETag值。
+- 当资源更新，ETag也需更新。
+> 有强弱值之分
+- 强ETag值，不论实体发生多么细微的变化都会改变值
+。
+        ETag: "usagi-1234"
+- 弱ETag值，资源发生根本改变，才改变值。会在字段开头附加W/
 
-    令客户端重定向至指定URI
-> Proxy-Authenticate -> 逐跳
+        ETag: W/"usagi-1234"
+### Location：令客户端重定向至指定URI
+> 告知客户端，重定向至此字段指定的URI访问资源。
+### Proxy-Authenticate -> 逐跳：代理服务器对客户端的认证信息
+> 把代理所要求的认证信息发送给客户端。
+### Retry-After：对再次发起请求的时机要求
+> 告知客户端多久之后再发送请求。
+- 可指定具体日期
+- 可指定响应后秒数
+### Server：HTTP服务器的安装信息
+> 告知客户端当前服务器上安装的HTTP服务器应用程序的信息。
 
-    代理服务器对客户端的认证信息
-> Retry-After
+        Server: Apache/2.2.6 (Unix) PHP/5.2.5
+### Vary：代理服务器缓存的管理信息
+> 对缓存进行控制。
+- 对此字段指定的首部字段相同时，返回缓存。
+- 反之须从源服务器重新获取资源。
 
-    对再次发起请求的时机要求
-> Server
+        Vary: Accept-language
+### WWW-Authenticate：服务器对客户端的认证信息
+> 用于HTTP访问认证。
+- 告知客户端适用于请求URI所指定的认证方案（BASIC或DIGEST）和带参数提示的质询
 
-    HTTP服务器的安装信息
-> Vary
-
-    代理服务器缓存的管理信息
-> WWW-Authenticate
-
-    服务器对客户端的认证信息
+        WWW-Authenticate: Basic realm=""Usagidesign Auth
 ## 实体首部字段
-> Allow
+### Allow：资源可支持的HTTP方法
+> 告知客户端，能够支持Requet-URI指定资源的所有HTTP方法。
+- 服务器收到不支持的HTTP方法时，以405 Method Not Allow作为响应，并带上含有支持的方法的Allow首部
+        Allow: GET, HEAD
+### Content-Encoding：实体主体适用的编码方式
+> 告知客户端，服务器对实体的主体部分选用的内容编码方式。
+- gzip
+- compress
+- deflate
+- identify
+### Content-Language：实体主体的自然语言
+> 告知客户端，实体主体使用的自然语言
+### Content-Length：实体主体的大小(单位：字节)
+> 实体的主体的大小（单位：字节）。
+- 对实体的主体进行内容编码时，不能再使用此字段。
+### Content-Location：替代对应资源的URI
+> 告知客户端，报文主体部分对应的URI。
+### Content-MD5：实体主体的报文摘要
+> 对报文指定MD5再指定Base64编码后的值
+- 用于报文完整性检查。但报文和此字段都可能被篡改，所以没作用。
+### Content-Range：实体主体的位置范围
+> 针对范围请求，告知客户端本轮响应的实体的范围，和整个实体大小。
 
-    资源可支持的HTTP方法
-> Content-Encoding
+        Content-Range: bytes 5001-10000/10000
+### Content-Type：实体主体的媒体类型
+> 实体主体内对象的媒体类型
 
-    实体主体适用的编码方式
-> Content-Language
+        Content-Type: text/html; charset=UTF-8
+### Expires：实体主体过期的日期时间
+> 和Cache-control:max-age=[秒]作用一致，值是用日期。
+### Last-Modified：资源的最后修改日期
+> 指明资源最后修改日期。
 
-    实体主体的自然语言
-> Content-Length
-
-    实体主体的大小(单位：字节)
-> Content-Location
-
-    替代对应资源的URI
-> Content-MD5
-
-    实体主体的报文摘要
-> Content-Range
-
-    实体主体的位置范围
-> Content-Type
-
-    实体主体的媒体类型
-> Expires
-
-    实体主体过期的日期时间
-> Last-Modified
-
-    资源的最后修改日期
+        Last-Modified: Web, 23 May 2012 09:59:55 GMT
