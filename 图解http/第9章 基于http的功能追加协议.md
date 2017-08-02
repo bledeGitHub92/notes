@@ -6,7 +6,9 @@
 - WebSocket首部信息量很小。
 - 在http建立后，需要完成一次握手的步骤
     - 握手 - 请求，需要用到Upgrade首部字段
-
+      > Sec-WebSocket-Key 记录了握手过程中必不可少的键值  
+        Sec-WebSocket-Protocol 记录使用的子协议
+            
             GET /chat HTTP/1.1
             Host: server.example.com
             Upgrade: websocket
@@ -15,5 +17,3 @@
             Origin: http://example.com
             Sec-WebSocket-Protocol: chat, superchat
             Sec-WebSocket-Version: 13
-        > Sec-WebSocket-Key 记录了握手过程中必不可少的键值
-        > Sec-WebSocket-Protocol 记录使用的子协议
