@@ -2,36 +2,37 @@
 - 端到端首部：此类首部会转发给请求/响应对应的最终接收目标，且必须保存在由缓存生成的响应中,必须转发。
 - 逐条首部：此类首部只对单次转发有效，会因通过或代理而不再转发。
 ## 通用首部字段
-Cache-Control：控制缓存行为。
-> 缓存请求指令
-- no-cache：参数无；强制向源服务器再次验证。
-- no-store：参数无；不缓存请求或响应的任何内容。
-- max-age = [秒]：参数必需；响应的缓存时间最大值。
-- max-stale(= [秒])：参数可选；接收已过期指定时间内的响应。
-- min-fresh = [秒]：参数必需；期望在指定时间内的响应仍有效。
-- no-tranform：参数无；代理不可更改媒体类型。
-- only-if-cached：参数无；缓存服务器有缓存才获取资源。
-- cache-extension：参数无；新指令标记（token）。
-> 缓存响应指令
-- public：参数无；可向任意方提供响应的缓存。
-- private：参数可选；仅向特定用户返回响应。
-- no-cache(= [location])：参数可选；缓存前必须确认其有效性。
-- no-store：参数无；不缓存请求或响应的任何内容。
-- no-transform：参数无；代理不可更改媒体类型。
-- must-revalidate：参数无;可缓存但必须向源服务器进行确认。
-- proxy-revalidate：参数无；要求中间缓存服务器对缓存的响应有效性再进行确认。
-- max-age = [秒]：参数必需；响应的缓存时间最大值。
-- s-maxage = [秒]：参数必需；公共缓存服务器响应的最大Age值。
-- cache-extension：参数无；新指令标记（token）。
+> Cache-Control：控制缓存行为。
+1. 缓存请求指令
+    - no-cache：参数无；强制向源服务器再次验证。
+    - no-store：参数无；不缓存请求或响应的任何内容。
+    - max-age = [秒]：参数必需；响应的缓存时间最大值。
+    - max-stale(= [秒])：参数可选；接收已过期指定时间内的响应。
+    - min-fresh = [秒]：参数必需；期望在指定时间内的响应仍有效。
+    - no-tranform：参数无；代理不可更改媒体类型。
+    - only-if-cached：参数无；缓存服务器有缓存才获取资源。
+    - cache-extension：参数无；新指令标记（token）。
+2. 缓存响应指令
+    - public：参数无；可向任意方提供响应的缓存。
+    - private：参数可选；仅向特定用户返回响应。
+    - no-cache(= [location])：参数可选；缓存前必须确认其有效性。
+    - no-store：参数无；不缓存请求或响应的任何内容。
+    - no-transform：参数无；代理不可更改媒体类型。
+    - must-revalidate：参数无;可缓存但必须向源服务器进行确认。
+    - proxy-revalidate：参数无；要求中间缓存服务器对缓存的响应有效性再进行确认。
+    - max-age = [秒]：参数必需；响应的缓存时间最大值。
+    - s-maxage = [秒]：参数必需；公共缓存服务器响应的最大Age值。
+    - cache-extension：参数无；新指令标记（token）。
+> Connection：逐跳首部、连接管理。
+1. 控制不再转发给代理的首部字段
+    - Connection：不再转发的首部字段名
+2. 管理持久连接
+    - 服务器关闭持久连接。
 
-Connection：逐跳首部、连接管理。
-> 控制不再转发给代理的首部字段
-- Connection：不再转发的首部字段名
-> 管理持久连接
-- 服务器关闭持久连接。
-    Connection: close
-- http/1.0建立持久连接
-    Connection: Keep-Alive
+        Connection: close
+    - http/1.0建立持久连接
+    
+        Connection: Keep-Alive
 
 > Date
 
