@@ -15,5 +15,5 @@
             Origin: http://example.com
             Sec-WebSocket-Protocol: chat, superchat
             Sec-WebSocket-Version: 13
-> Sec-WebSocket-Key 记录了握手过程中必不可少的键值
-> Sec-WebSocket-Protocol 记录使用的子协议
+        > Sec-WebSocket-Key 记录了握手过程中必不可少的键值
+        > Sec-WebSocket-Protocol 记录使用的子协议
