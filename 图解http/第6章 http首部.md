@@ -33,20 +33,34 @@
 - http/1.0建立持久连接
 
         Connection: Keep-Alive
+### Date：创建报文的日期和时间。
+> 时间格式
+- http/1.1
 
-> Date
+        Date: Tue, 03 Jul 2012 04:40:59 GMT
+- http/1.0
 
-    创建报文的日期时间
-> Pragma
+        Date: Tue, 03-Jul-12 04:40:59 GMT
+- 其他
 
-    报文指令
->  Trailer -> 逐跳
+        Date: Tue Jul 03 04:40:59 2012
+### Pragma：报文指令。
+> http/1.0遗留字段，向后兼容。
+- 仅在请求首部使用。要求所有中间服务器不返回缓存的资源。
 
-    报文末端的首部一览
+        Pragma: no-cache
+        Cache-Control: no-cache
+### Trailer：逐跳首部，报文末端的首部一览
+> 用在http/1.1分块传输编码。
+- 报文主体之后（分块长度0之后）出现首部字段Expires。
 
-> Transfer-Encoding -> 逐跳
-
-    指定报文主体的传输编码方式
+        Trailer: Expires
+        空行
+        ...（报文主体）...
+        0
+        Expires: Tue, 28 Sep 2004 23:59:59 GMT
+### Transfer-Encoding：逐跳首部，指定报文主体的传输编码方式
+> 
 
 > Upgrade -> 逐跳
 
