@@ -1,25 +1,33 @@
+## 首部类型
+- 端到端首部
+    - 此类首部会转发给请求/响应对应的最终接收目标，且必须保存在由缓存生成的响应中,必须转发。
+- 逐条首部
+    - 此类首部只对单次转发有效，会因通过或代理而不再转发。
 ## 通用首部字段
-> Cache-Control
+Cache-Control：控制缓存行为
+- no-cache：参数无；强制向源服务器再次验证。
+- no-store：参数无；不缓存请求或响应的任何内容。
+- max-age = [秒]：参数必需；响应的最大Age值。
+- max-stale( = [秒])：参数可选；接收已过期的响应。
+- min-fresh = [秒]：参数必需；期望在指定时间内的响应扔有效。
+- no-tranform：参数无；代理不可更改媒体类型。
+Connection：逐跳首部、连接管理
 
-    控制缓存行为
-> Connection
-
-    逐跳首部、连接管理
 > Date
 
     创建报文的日期时间
 > Pragma
 
     报文指令
-> Trailer
+>  Trailer -> 逐跳
 
     报文末端的首部一览
 
-> Transfer-Encoding
+> Transfer-Encoding -> 逐跳
 
     指定报文主体的传输编码方式
 
-> Upgrade
+> Upgrade -> 逐跳
 
     升级为其他协议
 
@@ -74,7 +82,7 @@
 > Max-Forwards
 
     最大传输逐跳数
-> Proxy-Authorization
+> Proxy-Authorization -> 逐跳
 
     代理服务器要求客户端的认证信息
 > Range
@@ -83,7 +91,7 @@
 > Referer
 
     对请求中URI的原始获取方
-> TE
+> TE -> 逐跳
 
     传输编码优先级
 > User-Agent
@@ -102,7 +110,7 @@
 > Location
 
     令客户端重定向至指定URI
-> Proxy-Authenticate
+> Proxy-Authenticate -> 逐跳
 
     代理服务器对客户端的认证信息
 > Retry-After
