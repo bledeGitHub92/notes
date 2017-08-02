@@ -28,8 +28,10 @@
 - Connection：不再转发的首部字段名
 > 管理持久连接
 - 服务器关闭持久连接。
+
         Connection: close
 - http/1.0建立持久连接
+
         Connection: Keep-Alive
 
 > Date
