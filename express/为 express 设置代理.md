@@ -1,0 +1,35 @@
+## 为 Express 设置代理
+当在代理服务器之后运行 Express 时，请将应用变量 trust proxy 设置（使用 [app.set()](http://www.expressjs.com.cn/4x/api.html#app.set)）为下述列表中的一项。
+
+> 如果没有设置应用变量 trust proxy，应用将不会运行，除非 trust proxy 设置正确，否则应用会误将代理服务器的 IP 地址注册为客户端 IP 地址。
+
+
+类型	                                                    值
+-----------|---------------
+Boolean	   |                                 如果为 true，客户端 IP 地址为 X-Forwarded-* 头最左边的项。  
+                                            
+                                            如果为 false, 应用直接面向互联网，客户端 IP 地址从 req.connection.remoteAddress 得来，这是默认的设置。
+
+IP 地址     |                                IP 地址、子网或 IP 地址数组和可信的子网。下面是预配置的子网列表。
+                                            
+                                            - loopback - 127.0.0.1/8, ::1/128
+                                            - linklocal - 169.254.0.0/16, fe80::/10
+                                            - uniquelocal - 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, fc00::/7
+                                            
+                                            使用如下方式设置 IP 地址：
+                                                
+                                                app.set('trust proxy', 'loopback') // 指定唯一子网
+                                                app.set('trust proxy', 'loopback, 123.123.123.123') // 指定子网和 IP 地址
+                                                app.set('trust proxy', 'loopback, linklocal, uniquelocal') // 指定多个子网
+                                                app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']) // 使用数组指定多个子网
+                                                
+                                                当指定地址时，IP 地址或子网从地址确定过程中被除去，离应用服务器最近的非受信 IP 地址被当作客户端 IP 地址。
+
+Number	   |                                 将代理服务器前第 n 跳当作客户端。
+
+Function	|                                定制实现，只有在您知道自己在干什么时才能这样做。
+
+                                                app.set('trust proxy', function (ip) {
+                                                if (ip === '127.0.0.1' || ip === '123.123.123.123') return true; // 受信的 IP 地址
+                                                else return false;
+                                                })
