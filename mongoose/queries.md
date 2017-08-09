@@ -7,11 +7,28 @@
 
 执行一个带 callback 的 query，指定一个语法同 MongoDB Shell 一样 JSON 文档作查询条件。
 
-    var Person = mongoose.model('Person', yourSchema);
+- mongoose 中的所有 callback 的模式都是 callback(error, result)。  
+- 查询出错，error 包含错误文档，result 为 null。  
+- 查询成功，error 为 null，result 包含查询结果。
 
-    // find each person with a last name matching 'Ghost', selecting the `name` and `occupation` fields
-    Person.findOne({ 'name.last': 'Ghost' }, 'name occupation', function (err, person) {
+        var Person = mongoose.model('Person', yourSchema);
+
+        // find each person with a last name matching 'Ghost', selecting the `name` and `occupation` fields
+        Person.findOne({ 'name.last': 'Ghost' }, 'name occupation', function (err, person) {
+            if (err) return handleError(err);
+            console.log('%s %s is a %s.', person.name.first, person.name.last, person.occupation) // Space Ghost is a talk show host.
+        })
+
+我们来看看不传入 callback 会发生什么。
+
+    // find each person with a last name matching 'Ghost'
+    var query = Person.findOne({ 'name.last': 'Ghost' });
+
+    // selecting the `name` and `occupation` fields
+    query.select('name occupation');
+
+    // execute the query at a later time
+    query.exec(function (err, person) {
         if (err) return handleError(err);
         console.log('%s %s is a %s.', person.name.first, person.name.last, person.occupation) // Space Ghost is a talk show host.
     })
-
