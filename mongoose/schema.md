@@ -37,7 +37,7 @@
 - ObjectId
 - Array
 
-### 创建模型
+## 创建模型
 
 通过 Schema 创建 Model。模型的实例就是文档。文档有许多内置的方法。
 
@@ -48,7 +48,7 @@
         console.log(doc);
     });
 
-### 添加实例方法
+## 添加实例方法
 
     var animalSchema = new Schema({ name: String, type: String });
 
@@ -65,7 +65,7 @@
         console.log(dogs);
     });
 
-### 添加静态方法
+## 添加静态方法
 
 Model 上的方法就是静态方法。
 
@@ -78,7 +78,7 @@ Model 上的方法就是静态方法。
         console.log(animals);
     });
 
-### 添加查询助手
+## 添加查询助手
 
 查询助手可以扩展 mongoose 的链式查询调用。
 
@@ -91,7 +91,7 @@ Model 上的方法就是静态方法。
         console.log(animals);
     });
 
-### 索引
+## 索引
 
 可以在 field level，schema level，model level 创建索引。
 
@@ -131,7 +131,7 @@ index 创建结束或报错时，mongoose 会触发 index 事件。
         console.log(error.message);
     });
 
-### 虚拟属性
+## 虚拟属性
 
 虚拟属性不会存进数据库，但可以获取和设置模式定义的字段。
 
@@ -164,7 +164,7 @@ index 创建结束或报错时，mongoose 会触发 index 事件。
     axl.fullName // Axl Rose
     axl.fullName = 'William Rose'; // Now `axl.name.first` is "William"
 
-### 别名
+## 别名
 
 别名是一种特殊的 virtual property。别名同时设置和获取关联的另外一个属性。
 
@@ -185,7 +185,7 @@ index 创建结束或报错时，mongoose 会触发 index 事件。
     person.name = 'Not Val';
     console.log(person); // { n: 'Not Val' }
 
-### 配置
+## 配置
 
 Schema 有几个参数可以设置。可以通过构造函数初始化，也可以调用 set 函数。
 
@@ -197,7 +197,7 @@ Schema 有几个参数可以设置。可以通过构造函数初始化，也可�
 
 可用的参数：
 
-#### autoIndex
+### autoIndex
 
 应用启动时，mongoose 会自动为定义在 schema 中的索引调用 ensureIndex。会造成性能问题。
 
@@ -207,13 +207,13 @@ Schema 有几个参数可以设置。可以通过构造函数初始化，也可�
     var Clock = mongoose.model('Clock', schema);
     Clock.ensureIndexes(callback);
 
-#### bufferConmmands
+### bufferConmmands
 
 By default, mongoose buffers commands when the connection goes down until the driver manages to reconnect. To disable buffering, set bufferCommands to false.
 
     var schema = new Schema({..}, { bufferCommands: false });
 
-#### capped
+### capped
 
 mongoose 支持 MongoDB 中的 capped 集合。
 
@@ -224,17 +224,17 @@ capped 还有些附加参数。
 
     new Schema({..}, { capped: { size: 1024, max: 1000, autoIndexId: true } });
 
-#### collection
+### collection
 
 自定义集合名字。mongoose 的集合名字默认使用 mongoose.model() 第一个参数的复数。
 
     var dataSchema = new Schema({..}, { collection: 'data' });
 
-#### emitIndexErrors
+### emitIndexErrors
 
 帮助处理创建索引时报的错误。
 
-#### id
+### id
 
 mongoose 默认为模式分配一个返回 _id 的虚拟 id getter。可关闭。
 
@@ -250,7 +250,7 @@ mongoose 默认为模式分配一个返回 _id 的虚拟 id getter。可关闭�
     var p = new Page({ name: 'mongodb.org' });
     console.log(p.id); // undefined
 
-#### _id
+### _id
 
 关闭后，不为文档分配 _id 字段。只能在在内嵌文档使用。
 
@@ -270,7 +270,7 @@ mongoose 默认为模式分配一个返回 _id 的虚拟 id getter。可关闭�
     // doc.children[0]._id will be undefined
     });
 
-#### minimize
+### minimize
 
 Mongoose will, by default, "minimize" schemas by removing empty objects.
 
@@ -300,16 +300,16 @@ This behavior can be overridden by setting minimize option to false. It will the
         console.log(character); // { name: 'Sam', inventory: {}}
     });
 
-#### read
+### read
 
 副本集
 
-#### safe
-#### shardKey
+### safe
+### shardKey
 
 分片
 
-#### strict
+### strict
 
 默认开启，防止未定义在 schema 中的字段存进数据库。
 
@@ -331,7 +331,7 @@ This behavior can be overridden by setting minimize option to false. It will the
     var thing = new Thing(doc, true);  // enables strict mode
     var thing = new Thing(doc, false); // disables strict mode
 
-#### useNestedStrict
+### useNestedStrict
 
 In mongoose 4, update() and findOneAndUpdate() only check the top-level schema's strict mode setting.
 
@@ -360,7 +360,7 @@ If you set useNestedStrict to true, mongoose will use the child schema's strict 
         // Works!
     });
 
-#### toJSON
+### toJSON
 
 同 toObject 差不多，但只在 toJSON 方法上起作用。
 
@@ -376,7 +376,7 @@ If you set useNestedStrict to true, mongoose will use the child schema's strict 
     // since we know toJSON is called whenever a js object is stringified:
     console.log(JSON.stringify(m)); // { "_id": "504e0cd7dd992d9be2f20b6f", "name": "Max Headroom is my name" }
 
-#### toObject
+### toObject
 
 文档的方法。把 mongoose 文档转成普通的 javascript 对象。
 
@@ -391,7 +391,7 @@ If you set useNestedStrict to true, mongoose will use the child schema's strict 
     var m = new M({ name: 'Max Headroom' });
     console.log(m); // { _id: 504e0cd7dd992d9be2f20b6f, name: 'Max Headroom is my name' }
 
-#### typeKey
+### typeKey
 
 By default, if you have an object with key 'type' in your schema, mongoose will interpret it as a type declaration.
 
@@ -407,7 +407,7 @@ However, for applications like geoJSON, the 'type' property is important. If you
     name: { $type: String }
     }, { typeKey: '$type' }); // A '$type' key means this object is a type declaration
 
-#### validateBeforeSave
+### validateBeforeSave
 
 mongoose 默认不会把未通过验证的字段存入数据库，设置 validateBeforeSave 为 false 就可以。
 
@@ -423,7 +423,7 @@ mongoose 默认不会把未通过验证的字段存入数据库，设置 validat
     });
     m.save(); // Succeeds despite being invalid
 
-#### versionKey
+### versionKey
 
 mongoose 默认为每个文档添加 __v 字段。用下面的方式解决冲突。
 
@@ -440,7 +440,7 @@ mongoose 默认为每个文档添加 __v 字段。用下面的方式解决冲突
     var thing = new Thing({ name: 'mongoose v3' });
     thing.save(); // { _somethingElse: 0, name: 'mongoose v3' }
 
-#### skipVersioning
+### skipVersioning
 
 指定某个字段的 __0 不更新。
 
@@ -450,7 +450,7 @@ mongoose 默认为每个文档添加 __v 字段。用下面的方式解决冲突
     thing.dontVersionMe.push('hey');
     thing.save(); // version is not incremented
 
-#### timestamps
+### timestamps
 
 If set timestamps, mongoose assigns createdAt and updatedAt fields to your schema, the type assigned is Date.
 
@@ -461,7 +461,7 @@ By default, the name of two fields are createdAt and updatedAt, customize the fi
     var thing = new Thing();
     thing.save(); // `created_at` & `updatedAt` will be included
 
-#### retainKeyOrder
+### retainKeyOrder
 
 mongoose 默认反转即将存入数据库的文档的字段来作某种优化。但会造成意外的副作用。所以考虑废除这种优化。
 
