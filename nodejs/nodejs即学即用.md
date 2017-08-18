@@ -327,3 +327,148 @@ Node 中可以使用系统中已经存在的进程，或者创建新的子进程
 和其他大部分模块不同， process 模块是全局的， 并且可以一直通过变量 process 获得。
 
 ##### process 事件
+
+process 是 EventEmitter 的实例， 所以它提供了基于对 Node 进程的系统调用的事件。 
+
+`exit` 事件提供了在 Node 进程退出前的最终响应时机。
+
+> 在 Node 退出前调用代码
+
+    <!-- 因为事件循环不会再运行， 因此 setTimeout() 里的代码永远不会执行  -->
+    process.on('exit', function () {
+        setTimeout(function () {
+            console.log('This will not run');
+        }, 100);
+        console.log('Bye.');
+    });
+
+process 提供的一个非常有用的事件是 `uncaughtException`。
+
+uncaughtException 事件会提供一个极其暴力的方法来捕获这些异常。
+
+> 通过 uncaughtException 事件捕获异常
+
+    process.on('uncaughtException', function (err) {
+        console.log('Caught exception: ' + err);
+    });
+
+    setTimeout(function () {
+        console.log('This will still run.');
+    }, 500);
+
+    <!-- 故意导致异常， 并且不捕获它。 -->
+    nonexistentFunc();
+    console.log('This will not run.');
+
+在这个例子中， 因为 nonexistentFunc() 抛出了异常， 所以在它之后的代码都不会执行下去。
+
+> 捕获异常的回调函数的作用
+
+    var http = require('http');
+    var server = http.createServer(function(req,res) {
+        res.writeHead(200, {});
+        res.end('response');
+        badLoggingCall('sent response');
+        console.log('sent response');
+    });
+
+    process.on('uncaughtException', function(e) {
+        console.log(e);
+    });
+
+    server.listen(8080);
+
+在 HTTP 服务器中， 回调函数在发送了 HTTP 响应后， 故意调用了一个错误的函数。 
+
+##### 与当前的 Node 进程交互
+
+process 包含了有关 Node 进程的许多元信息。
+
+这里面包含了关于 Node 进程的若干不可改变（ 只读） 的信息，例如：
+
+- process.version： 正在运行的 Node 的版本号
+- process.installPrefix：安装时指定的安装目录 (/usr/local、 ~/local 等 )
+- process.platform：会列出正在运行的平台名称。 输出内容会指明内核（ linux2、 darwin 等）， 而不是 Redhat ES3、 Windows 7、 OSX 10.7 这一类名称。
+- process.pid：正在运行的 Node 实例的进程 ID， 或称为 PID。
+- process.execPath：显示的是当前执行的 node 程序所在的路径。
+- process.uptime()：出当前进程运行了多少秒。
+- process.cwd()：当前的工作目录。
+- process.memoryUsage()：来得到当前进程的内存使用情况。
+
+此外， 你还可以从 Node 进程得到或设置一些属性。 
+
+你可以调用 process.getgid()、 process.setgid()、process.getuid() 和 process.setuid() 来获得或修改这些属性。
+
+你还能修改 process.title 属性来设置 Node 显示在系统的标题名称， 该属性修改后的内容会在 ps 命令调用时显示出来。 当你在生产环境中需要运行多个 Node 进程时， 这会很有用。
+
+#### 操作系统输入 / 输出
+
+其中一个主要功能就是可以访问操作系统的标准 I/O 流， stdin 是进程的默认输入流， stdout 是进程的输出流， stderr 是其错误输出流。 它们对应暴露的接口是process.stdin、 process.stdout 和 process.stderr， 其 中 process.stdin 是可读的数据流， 而 process.stdout 和 process.stderr 是可写的数据流。
+
+(1) process.stdin stdin 在进程间通信时是非常有用的， 它能够为命令行下采用管道通信提供便利。 当我们输入 cat file.txt | node program.js 时， 标准输入流会接收到 cat 命令输出的数据。
+
+因为任何时候都能使用 process， 所以 process.stdin 也会为所有的 Node 进程初始化。 但它一开始是处于暂停状态， 这时候 Node 可以对它进行写入操作， 但是你不能从它读取内容。 在尝试从 stdin 读数据之前， 需要先调用它的 resume() 方法。 Node 会为此数据流填入供读取的缓存， 并等待你的处理， 这样可以避免数据丢失。
+
+> 把标准输入写到标准输出
+
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+
+    process.stdin.on('data', function (chunk) {
+        process.stdout.write('data: ' + chunk);
+    });
+
+    process.stdin.on('end', function () {
+        process.stdout.write('end');
+    });
+
+因为 stdin 和 stdout 都是真正的数据流， 所以我们也可以采用更简便的方法， 那就是使用数据流的 pipe() 方法。
+
+> 通过管道把标准输入转到标准输出
+
+    process.stdin.resume();
+    process.stdin.pipe(process.stdout);
+
+这是连接两个数据流的最漂亮的方式。
+
+(2) process.stderr stderr 用来输出异常和程序运行过程中遇到的问题。
+
+还需要注意的是， process.stderr 永远是 UTF-8 编码的数据流。 不需要设置编码格式， 你写入 process.stderr 的所有数据都会被当做 UTF-8 来处理。 而且， 你不能更改编码格式。
+
+另外， Node 程序员要从操作系统读取的内容还包括了程序启动时的参数。 argv 是包含命令行参数的数组， 以 node 命令为第一个参数
+
+> 输出 argv 的简单脚本
+
+    console.log(process.argv);
+
+##### 事件循环和计数器
+
+process.nextTick() 创建了一个回调函数， 它会在下一个 tick 或者事件循环下一次迭代时被调用。
+
+> 用 process.nextTick() 往事件循环队列里插入回调函数
+
+    > var http = require('http');
+    > var s = http.createServer(function(req, res) {
+    ... res.writeHead(200, {});
+    ... res.end('foo');
+    ... console.log('http response');
+    ... process.nextTick(function(){console.log('tick')});
+    ... });
+    > s.listen(8000);
+    >>
+    http response
+    tick
+    http response
+    tick
+
+#### 子进程
+
+你可以使用 child_process 模块来为 Node 主进程创建子进程。 因为 Node 的单进程只有一个事件循环， 所以有时候创建子进程是很有用的。
+
+比如， 你可能需要用此方法来更好地利用 CPU 的多核， 而单个 Node 进程只能使用其中一个核。
+
+child_process 有两个主要的方法。 
+
+spawn() 会创建一个子进程， 并且有独立的stdin、 stdout 和 stderr 文件描述符。 
+
+exec() 会创建子进程， 并会在进程结束的时候以回调函数的方式返回结果。 
