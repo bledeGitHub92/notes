@@ -469,6 +469,36 @@ process.nextTick() 创建了一个回调函数， 它会在下一个 tick 或者
 
 child_process 有两个主要的方法。 
 
-spawn() 会创建一个子进程， 并且有独立的stdin、 stdout 和 stderr 文件描述符。 
+`spawn()` 会创建一个子进程， 有独立的stdin、 stdout 和 stderr 文件描述符。 
 
-exec() 会创建子进程， 并会在进程结束的时候以回调函数的方式返回结果。 
+- 第一个参数是让进城开始运行的`可执行程序`，如：''。
+- 第二个参数是数组形式的进城参数（空格分隔）。
+- 第三个参数是选项数组。
+
+
+
+`exec()` 会创建子进程， 会在进程结束的时候以回调函数的方式返回结果。 
+
+- 第一个参数是让进城开始运行的`命令字符串`，如：'ls -l'。
+- 第二个参数是配置对象。
+- 第三个参数是进城结束时调用的回调函数。
+
+> child_process.exec() 的默认配置对象
+
+    var options = {
+        encoding: 'utf8',
+        timeout: 0,
+        maxBuffer: 200 * 1024,
+        killSignal: 'SIGTERM',
+        setsid: false,
+        cwd: null,
+        env: null 
+    };
+
+- encoding: I/O 流输入字符的编码格式。
+- timeout: 进程运行的时间， 以毫秒为单位。
+- killSignal: 当时间或 Buffer 大小超过限制时， 用来终止进程的信号。
+- maxBuffer: stdout 或 stderr 允许最大的大小， 以千字节为单位。
+- setsid: 是否创建 Node 子进程的新会话。
+- cwd: 为子进程初始化工作目录（ null 表示使用当前的进程工作目录）。
+- env: 进程的环境变量。 所有的环境变量都可以从父进程继承。
