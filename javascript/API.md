@@ -1,5 +1,33 @@
 ## Array
 
+### array.every( ({ item, index, array }) => { ... }， ctx ) => boolean
+
+对数组每一项执行给定函数，如果每一项都返回 true，则返回 true。
+
+### array.some( ({ item, index, array }) => { ... }， ctx ) => boolean
+
+对数组每一项执行给定函数，如果任意一项都返回 true，则返回 true。
+
+### array.filter( ({ item, index, array }) => { ... }， ctx ) => array
+
+对数组每一项执行给定函数，返回 true 的项组成的数组。
+
+### array.map( ({ item, index, array }) => { ... }， ctx ) => array
+
+对数组每一项执行给定函数，返回每次函数调用结果组成的函数。
+
+### array.forEach( ({ item, index, array }) => { ... }， ctx ) => array
+
+对数组每一项执行给定函数，该函数没有返回值。
+
+### array.reduce( ({ prev, cur, index, array }) => { ... }, initial ) => any
+
+迭代数组所有项，并构建一个最终返回的值。
+
+### array.reduceRight( ({ prev, cur, index, array }) => { ... }, initial ) => any
+
+从最后一项开始归并数组。
+
 ### array.concat
 
 产生一个新数组。

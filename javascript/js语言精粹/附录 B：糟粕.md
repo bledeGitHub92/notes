@@ -28,3 +28,7 @@
     obj.a = obj.b;
 
 ## eval
+
+会造成安全问题。降低性能。
+
+ 浏览器提供的 setTimeout 函数接受字符串参数时跟 eval 一样。
