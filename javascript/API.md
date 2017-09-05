@@ -1,3 +1,37 @@
+## Global
+
+### isNaN
+
+### isFinite
+
+### parseInt
+
+### parseFloat
+
+### encodeURI(uri: string) => string
+
+对 URI 进行编码，以便发送给浏览器。有效的 URI 不包含某些字符，例如空格。
+
+不会对 URI 本身进行编码。例如，冒号、正斜杠、问号、井字号。
+
+可以对整个 URI 使用encodeURI。
+
+### decodeURI(uri: string) => string
+
+对使用 encodeURI 编码的 uri 进行解码。
+
+### encodeURIComponent(uri: string) => string
+
+会对发现的任何非标准字符进行编码。
+
+对附加在 URI 后面的字符串使用 encodeURIComponent。
+
+这个使用较多，一般对查询字符串进行编码，而不是对基础 URI 编码。
+
+### decodeURIComponent(uri: string) => string
+
+对使用 encodeURIComponent 编码的 uri 进行解码。
+
 ## Array
 
 ### array.every( ({ item, index, array }) => { ... }， ctx ) => boolean
@@ -151,6 +185,58 @@ join 把一个 array 构造成一个字符串。它先把 array 的每个元素�
 
 ## Object
 
+### Object.defineProperty(obj: object, property: string, descriptor: object) => void
+
+数据属性的 descriptor：value、writable、enumerable、configurable。
+
+访问器属性的 descriptor：get、set、enumerable、configurable。
+
+修改指定对象的指定属性的特性值。若不指定描述符对象，configurable、enumberable、writable 特性的默认值都是 false。
+
+### Object.defineProperties(obj: object, descriptor: object) => void
+
+在同一个对象上同时定义多个属性：
+
+    var book = {};
+
+    Object.defineProperties(book, {
+        _year: {
+            value: 1990
+        },
+        year: {
+            get() { return this._year },
+            set(value) { this._year = value }
+        }
+    });
+
+### Object.getOwnPropertyDescriptor(obj: object, property: string) => object
+
+获取指定对象的指定属性的描述符对象：
+
+    var book = {};
+    var book = Object.defineProperties(book, {
+        _year: {
+            value: 1990
+        }
+    });
+    var descriptor = Object.getOwnPropertyDescriptor(book, 'year');
+
+### Object.getPrototypeOf(obj: object) => object
+
+ECMAScript5 新增的这个方法用于获取 [[prototype]] 的值。
+
+### Object.keys(obj: object) => array
+
+返回由参数对象的所有可枚举的实例属性组成的数组，与在 for-in 循环中出现的顺序相同。
+
+### Object.getOwnPropretyNames(obj: object) => array
+
+获取由参数对象的所有实例属性组成的数组，无论是否可以枚举。
+
+### object.isPrototypeOf(obj: object) => boolean
+
+如果参数对象的 [[prototype]] 指向调用 isPrototypeOf 方法的对象，那么这个方法返回 true。
+
 ### object.hasOwnProperty
 
 判断标识符是否是 obj 的成员。原型链中的属性不会被检查。
@@ -292,3 +378,36 @@ separator 可为 regexp 或 string，可选参数 limit 可限制数组的长度
 ### string.toUpperCase()
 
 大写化 string。
+
+## Math
+
+### Math.min(value: number, ...) => number
+
+用于确定一个数组中的最小值，接收任意多个参数。
+
+### Math.max(value: number, ...) => number
+
+用于确定一个数组中的最大值，接收任意多个参数。
+
+### Math.ceil(value: number) => number
+
+向上舍入。
+
+### Math.floor(value: number) => number
+
+向下舍入。
+
+### Math.round(value: number) => number
+
+四舍五入。
+
+### Math.random() => number
+
+返回介于 0 ~ 1 的一个随机数。
+
+介于 n 到 m 之间的随机数：
+
+    function selectFrom(min, max) {
+        var choices = max - min + 1;
+        return Math.floor(Math.random() * choices + min);
+    }
