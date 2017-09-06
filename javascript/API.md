@@ -233,6 +233,10 @@ ECMAScript5 新增的这个方法用于获取 [[prototype]] 的值。
 
 获取由参数对象的所有实例属性组成的数组，无论是否可以枚举。
 
+### Object.create(obj: object, descriptors) => object
+
+以传入对象为原型创建一个新对象。descriptors 和 Object.defineProperties 的第 2 参数相同。
+
 ### object.isPrototypeOf(obj: object) => boolean
 
 如果参数对象的 [[prototype]] 指向调用 isPrototypeOf 方法的对象，那么这个方法返回 true。
