@@ -422,3 +422,352 @@ getElementsByClassName()方法接收一个参数，即一个包含一或多个�
     // 取得 ID 为"myDiv"的元素中带有类名"selected"的所有元素
     var selected = document.getElementById("myDiv").getElementsByClassName("selected");
 
+### classList
+
+支持 classList 属性的浏览器有 Firefox 3.6+和 Chrome。
+
+这个属性是新集合类型 DOMTokenList 的实例。用于简化操作类名的方法。是类数组对象，额外定义的方法：
+
+- add(value: string) => ，将给定的字符串添加到列表中。如果存在，就不添加；
+- contains(value: string) => ，列表中是否有给定的值。有返回 true，否则返回 false；
+- remove(value: string) => ，从列表中移除给定的字符串；
+- toggle(value: string) => ，如果列表中存在给定值就删除，否则就添加；
+
+    //删除"disabled"类
+    div.classList.remove("disabled");
+
+    //添加"current"类
+    div.classList.add("current");
+
+    //切换"user"类
+    div.classList.toggle("user");
+
+    //确定元素中是否包含既定的类名
+    if (div.classList.contains("bd") && !div.classList.contains("disabled")) {
+        //执行操作
+    }
+
+    //迭代类名
+    for (var i = 0, len = div.classList.length; i < len; i++) {
+        doSomething(div.classList[i]);
+    }
+
+### document.activeElement
+
+实现了这个属性的浏览器的包括 IE 4+、 Firefox 3+、 Safari 4+、 Chrome 和 Opera 8+。
+
+始终引用 DOM 中当前获得了焦点的元素。默认情况下，文档刚刚加载完成时， document.activeElement 中保存的是 document.body 元素的引用。文档加载期间， document.activeElement 的值为 null。元素获得焦点的方式有页面加载、用户输入（通常是通过按 Tab 键）和在代码中调用 focus()方法：
+
+    var button = document.getElementById("myButton");
+    button.focus();
+    alert(document.activeElement === button); //true
+
+### document.hasFocus()
+
+实现了这个属性的浏览器的包括 IE 4+、 Firefox 3+、 Safari 4+、 Chrome 和 Opera 8+。
+
+确定文档是否获得了焦点：
+
+    var button = document.getElementById("myButton");
+    button.focus();
+    alert(document.hasFocus()); //true
+
+### document.readyState
+
+支持 readyState 属性的浏览器有 IE4+、 Firefox 3.6+、 Safari、 Chrome 和 Opera 9+。
+
+使用 document.readyState 的最恰当方式，就是通过它来实现一个指示文档已经加载完成的指示器。Document 的 readyState 属性有两个可能的值：
+
+- uninitialized，还未开始载入；
+- loading，正在加载文档；
+- interactive，已加载，文档与用户可以开始交互；
+- complete，已经加载完文档；
+
+### document.onreadystatechange()
+
+当 document.readyState 属性发生变化时，调用回调函数。
+
+### document.compatMode
+
+在标准模式下， document.compatMode 的值等于"CSS1Compat"，而在混杂模式下， document.compatMode 的值等于"BackCompat"。
+
+### document.head
+
+引用文档 < head > 元素：
+
+    var head = document.head || document.getElementsByTagName("head")[0];
+
+### document.charset
+
+支持 document.charset 属性的浏览器有 IE、 Firefox、 Safari、 Opera 和 Chrome。
+
+档中实际使用的字符集，也可以用来指定新字符集。
+
+    alert(document.charset); //"UTF-16"
+    document.charset = "UTF-8";
+
+### document.defaultCharset
+
+支持document.defaultCharset 属性的浏览器有 IE、 Safari 和 Chrome。
+
+根据默认浏览器及操作系统的设置，当前文档默认的字符集应该是什么。
+
+### 自定义属性
+
+HTML5 规定可以为元素添加非标准的属性，但要添加前缀 data-，目的是为元素提供与渲染无关的信息，或者提供语义信息。这些属性可以任意添加、随便命名，只要以 data-开头即可：
+
+    < div id="myDiv" data-appId="12345" data-myname="Nicholas" >< /div >
+
+### dataset
+
+添加了自定义属性之后，可以通过元素的 dataset 属性来访问自定义属性的值。 dataset 属性的值是 DOMStringMap 的一个实例，也就是一个名值对儿的映射。在这个映射中，每个 data-name 形式的属性都会有一个对应的属性，只不过属性名没有 data-前缀：
+
+    //本例中使用的方法仅用于演示
+    var div = document.getElementById("myDiv");
+
+    //取得自定义属性的值
+    var appId = div.dataset.appId;
+    var myName = div.dataset.myname;
+
+    //设置值
+    div.dataset.appId = 23456;
+    div.dataset.myname = "Michael";
+
+    //有没有"myname"值呢？
+    if (div.dataset.myname) {
+        alert("Hello, " + div.dataset.myname);
+    }
+
+### innerHTML
+
+在读模式下， innerHTML 属性返回与调用元素的所有子节点（包括元素、注释和文本节点）对应的 HTML 标记。在写模式下， innerHTML 会根据指定的值创建新的 DOM 树，然后用这个 DOM 树完全替换调用元素原先的所有子节点。
+
+### outerHTML
+
+在读模式下， outerHTML 返回调用它的元素及所有子节点的 HTML 标签。在写模式下， outerHTML 会根据指定的 HTML 字符串创建新的 DOM 子树，然后用这个 DOM 子树完全替换调用元素。
+
+### insertAdjacentHTML(pos: enum, htmlText: string) =>
+
+支持 insertAdjacentHTML()方法的浏览器有 IE、 Firefox 8+、 Safari、 Opera 和 Chrome。
+
+它接收两个参数：插入位置和要插入的 HTML 文本。第一个参数必须是下列值之一：
+
+- "beforebegin"，在当前元素之前插入一个紧邻的同辈元素；
+- "afterbegin"，在当前元素之下插入一个新的子元素或在第一个子元素之前再插入新的子元素；
+- "beforeend"，在当前元素之下插入一个新的子元素或在最后一个子元素之后再插入新的子元素；
+- "afterend"，在当前元素之后插入一个紧邻的同辈元素；
+
+    //作为前一个同辈元素插入
+    element.insertAdjacentHTML("beforebegin", "< p >Hello world!</ p >");
+
+    //作为第一个子元素插入
+    element.insertAdjacentHTML("afterbegin", "< p >Hello world!</ p >");
+
+    //作为最后一个子元素插入
+    element.insertAdjacentHTML("beforeend", "< p >Hello world!</ p >");
+
+    //作为后一个同辈元素插入
+    element.insertAdjacentHTML("afterend", "< p >Hello world!</ p >");
+
+### scrollIntoView(value: boolean) =>
+
+scrollIntoView()可以在所有 HTML 元素上调用，通过滚动浏览器窗口或某个容器元素，调用元素就可以出现在视口中。
+
+## 专有扩展
+
+### chidren
+
+支持 children 属性的浏览器有 IE5、 Firefox 3.5、 Safari 2（但有 bug）、 Safari 3（完全支持）、 Opera8 和 Chrome（所有版本）。
+
+是 HTMLCollection 的实例，只包含元素中同样还是元素的子节点。
+
+### contains()
+
+支持 contains()方法的浏览器有 IE、 Firefox 9+、 Safari、 Opera 和 Chrome。
+
+在实际开发中，经常需要知道某个节点是不是另一个节点的后代。 调用 contains()方法的应该是祖先节点，也就是搜索开始的节点，这个方法接收一个参数，即要检测的后代节点。如果被检测的节点是后代节点，
+该方法返回 true；否则，返回 false：
+
+    alert(document.documentElement.contains(document.body)); //true
+
+### compareDocumentPosition()
+
+支持这个方法的浏览器有 IE9+、 Firefox、 Safari、 Opera 9.5+和 Chrome。
+
+确定节点间的关系。返回表示该关系的位掩码：
+
+| 掩码  | 节点关系                    |
+|-----|-------------------------|
+| 1   | 无关（给定的节点不在当前文档中）        |
+| 2   | 居前（给定的节点在DOM树中位于参考节点之前） |
+| 4   | 居后（给定的节点在DOM树中位于参考节点之后） |
+| 8   | 包含（给定的节点是参考节点的祖先）       |
+| 16  | 被包含（给定的节点是参考节点的后代）      |
+
+### textContent & innerText
+
+返回所有子元素的文本节点。写入时，用给定文本节点替换所有子元素。
+
+## DOM 2 & DOM 3
+
+### document.defaultView
+
+IE 中与之对应的是 parentWindow
+
+指向有用给点文档的窗口或框架。
+
+    var parentWindow = document.defaultView || document.parentWindow;
+
+### style
+
+这个 style 对象是 CSSStyleDeclaration 的实例，包含在 HTML 文档中通过 style 特性指定的样式信息。不包含外部样式表或嵌入样式表层叠而来的样式。在Javascript 中用驼峰大小写命名 css 中对应的样式名。
+
+其中一个不能直接转换的样式名是 float，因为它是 Javascript 中的保留字。要通过 cssFloat 访问，IE 中通过 styleFloat 访问。
+
+“DOM2 级样式”规范还为 style 对象定义了一些属性和方法。这些属性和方法在提供元素的 style 特性值的同时，也可以修改样式：
+
+- cssText：如前所述，通过它能够访问到 style 特性中的 CSS 代码；
+- length：应用给元素的 CSS 属性的数量；
+- item(index)：返回给定位置的 CSS 属性的名称，与 style[index] 返回值相同；
+- parentRule：表示 CSS 信息的 CSSRule 对象。本节后面将讨论 CSSRule 类型；
+- getPropertyCSSValue(propertyName)：返回包含给定属性值的 CSSValue 对象；
+- getPropertyPriority(propertyName)：如果给定的属性使用了!important 设置，则返回"important"；否则，返回空字符串；
+- getPropertyValue(propertyName)：返回给定属性的字符串值；
+- removeProperty(propertyName)：从样式中删除给定属性；
+- setProperty(propertyName,value,priority)：将给定属性设置为相应的值，并加上优先权标志（"important"或者一个空字符串）；
+
+### getComputedStyle(ele: object, value?: any = null) =>
+
+虽然 style 对象能够提供支持 style 特性的任何元素的样式信息，但它不包含那些从其他样式表层叠而来并影响到当前元素的样式信息。
+
+这个方法接受两个参数：要取得计算样式的元素和一个伪元素字符串（例如":after"）。如果不需要伪元素信息，第二个参数可以是 null。
+
+getComputedStyle()方法返回一个 CSSStyleDeclaration 对象（与 style 属性的类型相同），其中包含当前元素的所有计算的样式。
+
+    var myDiv = document.getElementById("myDiv");
+    var computedStyle = document.defaultView.getComputedStyle(myDiv, null);
+    
+    alert(computedStyle.backgroundColor); // "red"
+    alert(computedStyle.width); // "100px"
+    alert(computedStyle.height); // "200px"
+    alert(computedStyle.border); // 在某些浏览器中是"1px solid black"
+
+在 IE 中，每个具有 style 属性的元素还有一个 currentStyle 属性。这个属性是 CSSStyleDeclaration 的实例，包含当前元素全部计算后的样式：
+
+    var myDiv = document.getElementById("myDiv");
+    var computedStyle = myDiv.currentStyle;
+    
+    alert(computedStyle.backgroundColor); //"red"
+    alert(computedStyle.width); //"100px"
+    alert(computedStyle.height); //"200px"
+    alert(computedStyle.border); //undefined
+
+无论在哪个浏览器中，最重要的一条是要记住所有计算的样式都是只读的。
+
+### 偏移量
+
+首先要介绍的属性涉及偏移量（offset dimension），包括元素在屏幕上占用的所有可见的空间：
+
+- offsetHeight，元素在垂直方向上占用的空间大小，以像素计。包括元素的高度、（可见的）水平滚动条的高度、上边框高度和下边框高度；
+- offsetWidth，元素在水平方向上占用的空间大小，以像素计。包括元素的宽度、（可见的）垂直滚动条的宽度、左边框宽度和右边框宽度；
+- offsetLeft，元素的左外边框至包含元素的左内边框之间的像素距离；
+- offsetTop，元素的上外边框至包含元素的上内边框之间的像素距离；
+
+其中， offsetLeft 和 offsetTop 属性与包含元素有关，包含元素的引用保存在 offsetParent 属性中。 
+
+### 客户大小
+
+元素的客户区大小（client dimension），指的是元素内容及其内边距所占据的空间大小：
+
+- clientWidth，是元素内容区宽度加上左右内边距宽度；
+- clientHeight，是元素内容区高度加上上下内边距高度；
+
+### 滚动大小
+
+最后要介绍的是滚动大小（scroll dimension），指的是包含滚动内容的元素的大小：
+
+- scrollHeight：在没有滚动条的情况下，元素内容的总高度；
+- scrollWidth：在没有滚动条的情况下，元素内容的总宽度；
+- scrollLeft：被隐藏在内容区域左侧的像素数。通过设置这个属性可以改变元素的滚动位置；
+- scrollTop：被隐藏在内容区域上方的像素数。通过设置这个属性可以改变元素的滚动位置；
+
+### ele.getBoundingClientRect() => object
+
+确定元素大小。这个方法返回会一个矩形对象，包含 4 个属性： left、 top、 right 和 bottom。
+
+### NodeIterator
+
+使用 document.createNodeIterator()方法创建 NodeIterator 的新实例：
+
+- root：想要作为搜索起点的树中的节点；
+- whatToShow：表示要访问哪些节点的数字代码；
+- filter：是一个 NodeFilter 对象，或者一个表示应该接受还是拒绝某种特定节点的函数。如果不指定过滤器，传入 null。
+- entityReferenceExpansion：布尔值，表示是否要扩展实体引用。这个参数在 HTML 页面中没有用，因为其中的实体引用不能扩展；
+
+whatToShow 参数是一个位掩码，通过应用一或多个过滤器（filter）来确定要访问哪些节点。这个参数的值以常量形式在 NodeFilter 类型中定义：
+
+- NodeFilter.SHOW\_ALL：显示所有类型的节点；
+- NodeFilter.SHOW\_ELEMENT：显示元素节点；
+- NodeFilter.SHOW\_ATTRIBUTE：显示特性节点。由于 DOM 结构原因，实际上不能使用这个值；
+- NodeFilter.SHOW\_TEXT：显示文本节点；
+- NodeFilter.SHOW\_CDATA_SECTION：显示 CDATA 节点。对 HTML 页面没有用；
+- NodeFilter.SHOW\_ENTITY_REFERENCE：显示实体引用节点。对 HTML 页面没有用；
+- NodeFilter.SHOW\_ENTITYE：显示实体节点。对 HTML 页面没有用；
+- NodeFilter.SHOW\_PROCESSING_INSTRUCTION：显示处理指令节点。对 HTML 页面没有用；
+- NodeFilter.SHOW\_COMMENT：显示注释节点；
+- NodeFilter.SHOW\_DOCUMENT：显示文档节点；
+- NodeFilter.SHOW\_DOCUMENT_TYPE：显示文档类型节点；
+- NodeFilter.SHOW\_DOCUMENT_FRAGMENT：显示文档片段节点。对 HTML 页面没有用；
+- NodeFilter.SHOW\_NOTATION：显示符号节点。对 HTML 页面没有用；
+
+除了 NodeFilter.SHOW_ALL 之外，可以使用按位或操作符来组合多个选项，如下面的例子所示：
+
+    var whatToShow = NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT;
+
+可以通过 createNodeIterator()方法的 filter 参数来指定自定义的 NodeFilter 对象，或者指定一个功能类似节点过滤器（node filter）的函数。每个 NodeFilter 对象只有一个方法，即 acceptNode()；如果应该访问给定的节点，该方法返回 NodeFilter.FILTER\_ACCEPT，如果不应该访问给定的节点，该方法返回 NodeFilter.FILTER_SKIP。
+
+下列代码展示了如何创建一个只显示 < p > 元素的节点迭代器：
+
+    var filter = {
+        acceptNode: function (node) {
+            return node.tagName.toLowerCase() == "p" ?
+                NodeFilter.FILTER_ACCEPT :
+                NodeFilter.FILTER_SKIP;
+        }
+    };
+    var iterator = document.createNodeIterator(root, NodeFilter.SHOW_ELEMENT, filter, false);
+
+第三个参数也可以是一个与 acceptNode()方法类似的函数：
+
+    var filter = function(node){
+        return node.tagName.toLowerCase() == "p" ?
+            NodeFilter.FILTER_ACCEPT :
+            NodeFilter.FILTER_SKIP;
+    };
+
+NodeIterator 类型的两个主要方法是 nextNode()和 previousNode()。
+
+### TreeWalker
+
+创建 TreeWalker 对象要使用 document.createTreeWalker()方法，这个方法接受的 4 个参数与 document.createNodeIterator()方法相同。
+
+    var div = document.getElementById("div1");
+    var filter = function(node){
+        return node.tagName.toLowerCase() == "li"?
+        NodeFilter.FILTER_ACCEPT :
+        NodeFilter.FILTER_SKIP;
+    };
+    var walker= document.createTreeWalker(div, NodeFilter.SHOW_ELEMENT, filter, false);
+
+TreeWalker 是 NodeIterator 的一个更高级的版本。这个类型还提供了下列用于在不同方向上遍历 DOM 结构的方法：
+
+- parentNode()：遍历到当前节点的父节点；
+- firstChild()：遍历到当前节点的第一个子节点；
+- lastChild()：遍历到当前节点的最后一个子节点；
+- nextSibling()：遍历到当前节点的下一个同辈节点；
+- previousSibling()：遍历到当前节点的上一个同辈节点；
+
+由于 IE 中没有对应的类型和方法，所以使用遍历的跨浏览器解决方案非常少见。
+
+### 范围
+
