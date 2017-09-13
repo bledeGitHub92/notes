@@ -185,6 +185,82 @@ join 把一个 array 构造成一个字符串。它先把 array 的每个元素�
 
 ## Object
 
+### Object.preventExtensions(obj: object) => void
+
+不能再给对象添加属性和方法：
+
+> 不能给对象添加新成员，但可以修改和删除已有的成员。
+
+    var person = { name: "Nicholas" };
+    Object.preventExtensions(person);
+    person.age = 29;
+    alert(person.age); //undefined
+
+### Object.istExtensible(obj: object) => boolean
+
+可以确定对象是否可以扩展：
+
+    var person = { name: "Nicholas" };
+    alert(Object.isExtensible(person)); //true
+
+    Object.preventExtensions(person);
+    alert(Object.isExtensible(person)); //false
+
+###  Object.seal(obj: object) => void
+
+密封对象不可扩展，而且已有成员的 [[configurable]] 特性都被设置为 false，所以也不可删除对象成员。但属性的值可以修改。
+
+    var person = { name: "Nicholas" };
+    Object.seal(person);
+    
+    person.age = 29;
+    alert(person.age); //undefined
+    
+    delete person.name;
+    alert(person.name); //"Nicholas"
+
+### Object.isSealed(obj: object) => boolean
+
+确定对象是否被密封了。因为被密封的对象不可扩展，所以用Object.isExtensible()检测密封的对象也会返回 false：
+
+    var person = { name: "Nicholas" };
+    alert(Object.isExtensible(person)); //true
+    alert(Object.isSealed(person)); //false
+    
+    Object.seal(person);
+    alert(Object.isExtensible(person)); //false
+    alert(Object.isSealed(person)); //true
+
+### Object.freeze(obj: object) => void
+
+冻结的对象既不可扩展，又是密封的，而且对象数据属性的 [[Writable]] 特性会被设置为 false。如果定义 [[Set]] 函数，访问器属性仍然是可写的。
+
+    var person = { name: "Nicholas" };
+    Object.freeze(person);
+    
+    person.age = 29;
+    alert(person.age); //undefined
+    
+    delete person.name;
+    alert(person.name); //"Nicholas"
+    
+    person.name = "Greg";
+    alert(person.name); //"Nicholas"
+
+###  Object.isFrozen(obj: object) => boolean
+
+检测是否是冻结对象。因为冻结对象既是密封的又是不可扩展的，所以用 Object.isExtensible()和 Object.isSealed()检测冻结对象将分别返回 false和 true。
+
+    var person = { name: "Nicholas" };
+    alert(Object.isExtensible(person)); //true
+    alert(Object.isSealed(person)); //false
+    alert(Object.isFrozen(person)); //false
+    
+    Object.freeze(person);
+    alert(Object.isExtensible(person)); //false
+    alert(Object.isSealed(person)); //true
+    alert(Object.isFrozen(person)); //true
+
 ### Object.defineProperty(obj: object, property: string, descriptor: object) => void
 
 数据属性的 descriptor：value、writable、enumerable、configurable。
