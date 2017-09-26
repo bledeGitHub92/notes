@@ -191,10 +191,12 @@ join 把一个 array 构造成一个字符串。它先把 array 的每个元素�
 
 > 不能给对象添加新成员，但可以修改和删除已有的成员。
 
-    var person = { name: "Nicholas" };
-    Object.preventExtensions(person);
-    person.age = 29;
-    alert(person.age); //undefined
+```js
+var person = { name: "Nicholas" };
+Object.preventExtensions(person);
+person.age = 29;
+alert(person.age); //undefined
+```
 
 ### Object.istExtensible(obj: object) => boolean
 

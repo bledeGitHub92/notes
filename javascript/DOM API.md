@@ -175,10 +175,10 @@ Element 类型用于表现 XML 或 HTML 元素，提供了对元素标签名、�
 设置 / 访问非自定义的特性时要使用 ele.getAttribute() / ele.setAttribute() 方法。
 
 - ele.getAttribute(attrName: string) => string，仅在访问自定义特性时使用，一般直接使用对象的属性访问公认的特性；
-- ele.getAttributeNode(attrName: string) => attrNode，返回 attr 节点。不常用；
 - ele.setAttribute(attrName: string, value: any) => void，仅在设置自定义特性时使用，一般直接使用对象的属性设置公认的特性；
-- ele.setAttributeNode(attrNode) => ，通过传入 attr 节点设置元素的特性。不常用；
 - ele.removeAttribute(attrName: string) => void，彻底删除元素的特性，这个方法不常用。
+- ele.getAttributeNode(attrName: string) => attrNode，返回 attr 节点。不常用；
+- ele.setAttributeNode(attrNode) => ，通过传入 attr 节点设置元素的特性。不常用；
 
 ### attributes 属性
 
