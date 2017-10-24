@@ -24,7 +24,7 @@ IE 4+、 Firefox 3+、 Safari 4+、 Chrome 和 Opera 8+。
 
 ## document.hasFocus()
 
-用于确定文档是否获得了焦点
+用于确定文档是否获得了焦点。
 
 # HTMLDocument 的变化
 
@@ -87,7 +87,7 @@ HTML5 规定可以为元素添加非标准的属性，但要添加前缀 data-�
 
 ## elem.dataset
 
-是一个 DOMStringMap 的实例，特性 data-name="value" 会自动映射为 { name: value }。
+是一个 DOMStringMap 的实例，特性 data-name="value" 会自动映射为 elem.dataset 对象上的 key-value。
 
 ```js
 <div data-appId="foo" data-myName="bar"></div>
@@ -103,3 +103,55 @@ div.dataset.myname = "Michael";
 ### 兼容性
 
 Firefox 6+ 和 Chrome。
+
+# 插入标记
+
+方便于向文档插入大量新 HTML 标记。
+
+## elem.innerHTML
+
+根据指定值创建新的 DOM 树，然后替换调用元素的子节点。
+
+### 兼容性
+
+IE8+
+
+## elem.outerHTML
+
+根据指定值创建新的 DOM 树，然后替换调用元素及其子元素。
+
+### 兼容性
+
+IE4+、 Safari 4+、 Chrome 和 Opera 8+。 Firefox 7 及之前版本都不支持 outerHTML 属性。
+
+## elem.insertAdjacentHTML(pos, text)
+
+```js
+//作为前一个同辈元素插入
+element.insertAdjacentHTML("beforebegin", "<p>Hello world!</p>");
+//作为后一个同辈元素插入
+element.insertAdjacentHTML("afterend", "<p>Hello world!</p>");
+//作为第一个子元素插入
+element.insertAdjacentHTML("afterbegin", "<p>Hello world!</p>");
+//作为最后一个子元素插入
+element.insertAdjacentHTML("beforeend", "<p>Hello world!</p>");
+```
+
+### 兼容性
+
+IE、 Firefox 8+、 Safari、 Opera 和 Chrome。
+
+## 性能问题
+
+使用上述方法删除带有事件处理程序（或引用了 js 对象）的 DOM 元素时，对应事件处理程序（或引用的 js 对象）并不会删除。
+
+所以用上述方法删除 DOM 元素时，要删除被替换元素的事件处理程序（或引用的 js 对象）。
+
+# elem.scrollIntoView()
+
+将滚动条移动到调用元素的位置上。
+
+## 兼容性
+
+IE、 Firefox、 Safari 和 Opera。
+
