@@ -22,6 +22,7 @@ nodelists.item(0)
 
 ```js
 node.childNodes
+form.elements[name] // 多个表单元素的 name 特性相同
 [document | elem].querySelectorAll(selector) // 一个快照
 [document | elem].getElementsByClassName(className)
 ```
@@ -48,6 +49,7 @@ document.getElementsByName(name)
 document.anchors
 document.links
 document.forms
+document.forms.elements
 document.images
 table.tBodies
 table.rows
