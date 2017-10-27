@@ -55,6 +55,7 @@ table.tBodies
 table.rows
 tbody.rows
 tbody.cells
+select.options
 ```
 
 ## NamedNodeMap
