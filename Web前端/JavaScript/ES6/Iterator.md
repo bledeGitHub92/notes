@@ -35,7 +35,7 @@ it.next() // { value: undefined, done: true }
 function makeIterator(array) {
   var nextIndex = 0;
   return {
-    next: function() {
+    next() {
       return nextIndex < array.length ?
         {value: array[nextIndex++], done: false} :
         {value: undefined, done: true};
